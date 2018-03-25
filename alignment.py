@@ -140,7 +140,7 @@ def alignPair(f1, f2, matches, m, nRANSAC, RANSACthresh):
 
         elif m == eHomography:
             _matches = []
-            idices = np.random.randint(len(matches), size = 4)
+            indices = np.random.randint(len(matches), size = 4)
             for j in indices:
                 _matches.append(matches[j])
             M = computeHomography(f1, f2, _matches)
@@ -148,7 +148,7 @@ def alignPair(f1, f2, matches, m, nRANSAC, RANSACthresh):
         else:
             raise Exception("Error: Invalid motion model.")
 
-    inlier_indices = getInliers(f1, f2, matches, H, RANSACthresh)
+    inlier_indices = getInliers(f1, f2, matches, M, RANSACthresh)
 
     M = leastSquaresFit(f1, f2, matches, m, inlier_indices)
     #TODO-BLOCK-END
