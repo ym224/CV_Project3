@@ -189,7 +189,7 @@ def getInliers(f1, f2, matches, M, RANSACthresh):
 
         # get feature from image 1
         # TODO: this is wrong
-        feat1 = f1[matches[i].queryIdx]
+        feat1 = f1[matches[i].queryIdx].pt[0]
         print (feat1)
 
         # Transform feature with given homography
