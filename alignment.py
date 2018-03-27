@@ -198,6 +198,8 @@ def getInliers(f1, f2, matches, M, RANSACthresh):
         feat2 = f2[matches[i].trainIdx].pt
         feat2 = np.array([feat2[0],feat2[1],1])
 
+        print(i)
+        print(feat1)
         print (trans)
         print (feat2)
 
@@ -206,7 +208,6 @@ def getInliers(f1, f2, matches, M, RANSACthresh):
         
         if (dist < RANSACthresh) :
             print ("Yes")
-            print(i)
             inlier_indices.append(i)
 
 
