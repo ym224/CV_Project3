@@ -189,14 +189,21 @@ def getInliers(f1, f2, matches, M, RANSACthresh):
 
         # get feature from image 1
         feat1 = f1[matches[i].queryIdx].pt
-        print(type(feat1))
         feat1 = np.array([feat1[0],feat1[1],1])
         
         # Transform feature with given homography
         trans = np.dot(M, feat1);
 
+        # Get feature from image 2
+        feat2 = f2[matches[i].trainIdx].pt
+        feat2 = np.array([feat2[0],feat2[1],1])
+
+        print (trans)
+        print (feat2)
+
         # Compute euclidean distance
-        # dist = 
+        dist = np.linalg.norm(feat1-feat2)
+        print (dist)
 
         #TODO-BLOCK-END
         #END TODO
