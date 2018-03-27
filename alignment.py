@@ -202,8 +202,11 @@ def getInliers(f1, f2, matches, M, RANSACthresh):
         print (feat2)
 
         # Compute euclidean distance
-        dist = np.linalg.norm(feat1-feat2)
+        dist = np.linalg.norm(trans-feat2)
         print (dist)
+        dist = np.linalg.norm(feat2-trans)
+        print (dist)
+
 
         #TODO-BLOCK-END
         #END TODO
