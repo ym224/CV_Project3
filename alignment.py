@@ -31,7 +31,8 @@ def computeHomography(f1, f2, matches, A_out=None):
     num_rows = 2 * num_matches
     num_cols = 9
     A_matrix_shape = (num_rows,num_cols)
-    A = np.zeros(A_matrix_shape)
+
+    A = np.eye(A_matrix_shape)
 
     for i in range(len(matches)):
         m = matches[i]
@@ -283,6 +284,7 @@ def leastSquaresFit(f1, f2, matches, m, inlier_indices):
         for i in range(len(inlier_indices)):
             index = inlier_indices[i]
             _matches.append(matches[index])
+
         M = computeHomography(f1, f2, _matches)
 
         #TODO-BLOCK-END
