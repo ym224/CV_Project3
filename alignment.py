@@ -197,8 +197,7 @@ def getInliers(f1, f2, matches, M, RANSACthresh):
         print (i)
         print (feat1);
         print (M)
-        print (type(M))
-        # print (trans);
+        print (trans);
         print ("\n")
 
         # Compute euclidean distance
