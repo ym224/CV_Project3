@@ -192,7 +192,7 @@ def getInliers(f1, f2, matches, M, RANSACthresh):
         feat1 = np.array([feat1[0],feat1[1],1])
         
         # Transform feature with given homography
-        # trans = np.dot(M, feat1);
+        trans = np.dot(M, feat1);
 
         print (i)
         print (feat1);
