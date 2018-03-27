@@ -191,12 +191,12 @@ def getInliers(f1, f2, matches, M, RANSACthresh):
         feat1 = f1[matches[i].queryIdx].pt
         
         # Transform feature with given homography
-        trans = np.dot(M, feat1);
+        # trans = np.dot(M, feat1);
 
         print (i)
         print (feat1);
         print (M)
-        print (trans);
+        # print (trans);
         print ("\n")
 
         # Compute euclidean distance
