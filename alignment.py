@@ -32,7 +32,7 @@ def computeHomography(f1, f2, matches, A_out=None):
     num_cols = 9
     A_matrix_shape = (num_rows,num_cols)
 
-    A = np.eye(A_matrix_shape)
+    A = np.zeros(A_matrix_shape)
 
     for i in range(len(matches)):
         m = matches[i]
