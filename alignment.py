@@ -198,22 +198,21 @@ def getInliers(f1, f2, matches, M, RANSACthresh):
         feat2 = f2[matches[i].trainIdx].pt
         feat2 = np.array([feat2[0],feat2[1],1])
 
-        print(i)
-        print(feat1)
-        print (trans)
-        print (feat2)
+        # print(i)
+        # print(feat1)
+        # print (trans)
+        # print (feat2)
 
         # Compute euclidean distance
         dist = np.linalg.norm(trans-feat2)
         
         if (dist < RANSACthresh) :
-            print ("Yes")
             inlier_indices.append(i)
 
 
         #TODO-BLOCK-END
         #END TODO
-    print (inlier_indices)  
+    # print (inlier_indices)  
     return inlier_indices
 
 def leastSquaresFit(f1, f2, matches, m, inlier_indices):
