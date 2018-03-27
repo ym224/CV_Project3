@@ -193,7 +193,6 @@ def getInliers(f1, f2, matches, M, RANSACthresh):
         
         # Transform feature with given homography
         trans = np.dot(M, feat1)
-        print (trans[2])
         trans /= trans[2]
         print (trans)
 
@@ -259,9 +258,11 @@ def leastSquaresFit(f1, f2, matches, m, inlier_indices):
             #over all inliers.
             #TODO-BLOCK-BEGIN
 
+            index = inlier_indices[i]
+
             # sum of difference between matches
-            u += f2[matches[i].trainIdx].pt[0] - f1[matches[i].queryIdx].pt[0]
-            v += f2[matches[i].trainIdx].pt[1] - f1[matches[i].queryIdx].pt[1]
+            u += f2[matches[index].trainIdx].pt[0] - f1[matches[index].queryIdx].pt[0]
+            v += f2[matches[index].trainIdx].pt[1] - f1[matches[index].queryIdx].pt[1]
 
             #TODO-BLOCK-END
             #END TODO
@@ -279,8 +280,9 @@ def leastSquaresFit(f1, f2, matches, m, inlier_indices):
         #TODO-BLOCK-BEGIN
 
         _matches = []
-        for i in inlier_indices:
-            _matches.append(matches[i])
+        for i in range(len(inlier_indices)):
+            index = inlier_indices[i]
+            _matches.append(matches[index])
         M = computeHomography(f1, f2, _matches)
 
         #TODO-BLOCK-END
