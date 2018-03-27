@@ -85,7 +85,7 @@ def computeHomography(f1, f2, matches, A_out=None):
 
     # min eigenvalue of A^TA is the last col of Vt
     H = Vt[-1].reshape((3,3))
-    # convert from homogenous coords
+    # convert to homogenous coords
     H /= H[2, 2]
 
     #TODO-BLOCK-END
@@ -129,6 +129,8 @@ def alignPair(f1, f2, matches, m, nRANSAC, RANSACthresh):
     #least_squares_fit.
     #TODO-BLOCK-BEGIN
 
+    max_inlier_indices = []
+
     for i in range(nRANSAC):
         M = np.eye(3)
 
@@ -148,9 +150,11 @@ def alignPair(f1, f2, matches, m, nRANSAC, RANSACthresh):
         else:
             raise Exception("Error: Invalid motion model.")
 
-    inlier_indices = getInliers(f1, f2, matches, M, RANSACthresh)
+        inlier_indices = getInliers(f1, f2, matches, M, RANSACthresh)
+        if len(inlier_indices) > len(max_inlier_indices):
+            max_inlier_indices = inlier_indices
 
-    M = leastSquaresFit(f1, f2, matches, m, inlier_indices)
+    M = leastSquaresFit(f1, f2, matches, m, max_inlier_indices)
     #TODO-BLOCK-END
     #END TODO
     return M
@@ -185,7 +189,22 @@ def getInliers(f1, f2, matches, M, RANSACthresh):
         #by M, is within RANSACthresh of its match in f2.
         #If so, append i to inliers
         #TODO-BLOCK-BEGIN
-        raise Exception("TODO in alignment.py not implemented")
+
+        (a_x, a_y) = f1[matches[i].queryIdx].pt
+        (b_x, b_y) = f2[matches[i].trainIdx].pt
+
+        # transform image 1 by M
+        [xt, yt, zt] = np.dot(M, np.array([a_x, a_y, 1]))
+
+        x = xt / zt
+        y = yt / zt
+
+        # compute euclidean distance
+        distance = np.sqrt((b_x - x) ** 2 + (b_y - y) ** 2)
+
+        if distance <= RANSACthresh:
+            inlier_indices.append(i)
+
         #TODO-BLOCK-END
         #END TODO
 
