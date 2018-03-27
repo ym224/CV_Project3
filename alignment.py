@@ -181,7 +181,7 @@ def getInliers(f1, f2, matches, M, RANSACthresh):
     inlier_indices = []
 
     for i in range(len(matches)):
-        #BEGIN TODO 5
+        #BEGIN TODO 5 - Done
         #Determine if the ith matched feature f1[id1], when transformed
         #by M, is within RANSACthresh of its match in f2.
         #If so, append i to inliers
@@ -192,7 +192,11 @@ def getInliers(f1, f2, matches, M, RANSACthresh):
         feat1 = np.array([feat1[0],feat1[1],1])
         
         # Transform feature with given homography
-        trans = np.dot(M, feat1);
+        trans = np.dot(M, feat1)
+        print (trans)
+        trans /= trans[2]
+        print (trans)
+
 
         # Get feature from image 2
         feat2 = f2[matches[i].trainIdx].pt
