@@ -205,6 +205,8 @@ def getInliers(f1, f2, matches, M, RANSACthresh):
         dist = np.linalg.norm(trans-feat2)
         
         if (dist < RANSACthresh) :
+            print ("Yes")
+            print(i)
             inlier_indices.append(i)
 
 
