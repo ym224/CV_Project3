@@ -188,7 +188,10 @@ def getInliers(f1, f2, matches, M, RANSACthresh):
         #TODO-BLOCK-BEGIN
 
         # get feature from image 1
-        feat1 = [f1[matches[i].queryIdx].pt[0], f1[matches[i].queryIdx].pt[1], 1]
+        feat1 = np.eye(1)
+        feat1[0,0] = f1[matches[i].queryIdx].pt[0]
+        feat1[1,0] = f1[matches[i].queryIdx].pt[1]
+        feat1[2,0] = 1
         
         # Transform feature with given homography
         # trans = np.dot(M, feat1);
