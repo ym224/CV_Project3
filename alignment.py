@@ -189,7 +189,7 @@ def getInliers(f1, f2, matches, M, RANSACthresh):
 
         # get feature from image 1
         feat1 = f1[matches[i].queryIdx].pt
-        # feat1 = feat1.reshape
+        feat1 = np.array([feat1[0],feat1[1],1])
         
         # Transform feature with given homography
         # trans = np.dot(M, feat1);
