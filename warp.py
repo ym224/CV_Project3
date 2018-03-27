@@ -62,7 +62,8 @@ def computeSphericalWarpMappings(dstShape, f, k1, k2):
 
     xf = ((xf - 0.5 * dstShape[1]) / f)
     yf = ((yf - 0.5 * dstShape[0]) / f - min_y)
-    # BEGIN TODO 1
+
+    # BEGIN TODO 1 -- Done & tested
     # add code to apply the spherical correction, i.e.,
     # compute the Euclidean coordinates,
     # and project the point to the z=1 plane at (xt/zt,yt/zt,1),
@@ -88,6 +89,8 @@ def computeSphericalWarpMappings(dstShape, f, k1, k2):
 
     # TODO-BLOCK-END
     # END TODO
+
+
     # Convert back to regular pixel coordinates
     xn = 0.5 * dstShape[1] + xt * f
     yn = 0.5 * dstShape[0] + yt * f
