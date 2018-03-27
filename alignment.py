@@ -38,7 +38,7 @@ def computeHomography(f1, f2, matches, A_out=None):
         (a_x, a_y) = f1[m.queryIdx].pt
         (b_x, b_y) = f2[m.trainIdx].pt
 
-        #BEGIN TODO 2
+        #BEGIN TODO 2 - Done
         #Fill in the matrix A in this loop.
         #Access elements using square brackets. e.g. A[0,0]
         #TODO-BLOCK-BEGIN
@@ -151,6 +151,7 @@ def alignPair(f1, f2, matches, m, nRANSAC, RANSACthresh):
     inlier_indices = getInliers(f1, f2, matches, M, RANSACthresh)
 
     M = leastSquaresFit(f1, f2, matches, m, inlier_indices)
+
     #TODO-BLOCK-END
     #END TODO
     return M
@@ -185,7 +186,18 @@ def getInliers(f1, f2, matches, M, RANSACthresh):
         #by M, is within RANSACthresh of its match in f2.
         #If so, append i to inliers
         #TODO-BLOCK-BEGIN
-        raise Exception("TODO in alignment.py not implemented")
+
+        # get feature from image 1
+        # TODO: this is wrong
+        feat1 = f1[matches[i].queryIdx]
+        print (feat1)
+
+        # Transform feature with given homography
+        # trans = np.dot(M, feat1);
+
+        # Compute euclidean distance
+        # dist = 
+
         #TODO-BLOCK-END
         #END TODO
 
