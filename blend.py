@@ -66,16 +66,15 @@ def normalizeBlend(acc):
     # fill in this routine..
     #TODO-BLOCK-BEGIN
     
-    # height = acc.shape[0]
-    # width = acc.shape[1]
-    # img = np.zeros((height, width, 3))
-    # for i in range(height):
-    #     for j in range(width):
-    #         if acc[i, j, 3] > 0:
-    #             img[i, j, 0] = int(acc[i, j, 0] / acc[i, j, 3])
-    #             img[i, j, 1] = int(acc[i, j, 1] / acc[i, j, 3])
-    #             img[i, j, 2] = int(acc[i, j, 2] / acc[i, j, 3])
-    # img = np.uint8(img)
+    height = acc.shape[0]
+    width = acc.shape[1]
+    img = np.zeros((height, width, 3))
+    for i in range(height):
+        for j in range(width):
+            weights = acc[i, j, 3]
+            if weights > 0:
+                for c in range(3):
+                    img[i, j, c] = int(acc[i, j, c] / weights)
 
     #TODO-BLOCK-END
     # END TODO
