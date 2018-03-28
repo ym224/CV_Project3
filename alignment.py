@@ -31,6 +31,7 @@ def computeHomography(f1, f2, matches, A_out=None):
     num_rows = 2 * num_matches
     num_cols = 9
     A_matrix_shape = (num_rows,num_cols)
+
     A = np.zeros(A_matrix_shape)
 
     for i in range(len(matches)):
@@ -38,7 +39,7 @@ def computeHomography(f1, f2, matches, A_out=None):
         (a_x, a_y) = f1[m.queryIdx].pt
         (b_x, b_y) = f2[m.trainIdx].pt
 
-        #BEGIN TODO 2
+        #BEGIN TODO 2 - Done
         #Fill in the matrix A in this loop.
         #Access elements using square brackets. e.g. A[0,0]
         #TODO-BLOCK-BEGIN
@@ -184,30 +185,32 @@ def getInliers(f1, f2, matches, M, RANSACthresh):
     inlier_indices = []
 
     for i in range(len(matches)):
-        #BEGIN TODO 5
+        #BEGIN TODO 5 - Done
         #Determine if the ith matched feature f1[id1], when transformed
         #by M, is within RANSACthresh of its match in f2.
         #If so, append i to inliers
         #TODO-BLOCK-BEGIN
 
-        (a_x, a_y) = f1[matches[i].queryIdx].pt
-        (b_x, b_y) = f2[matches[i].trainIdx].pt
+        # get feature from image 1
+        feat1 = f1[matches[i].queryIdx].pt
+        feat1 = np.array([feat1[0],feat1[1],1])
+        
+        # Transform feature with given homography
+        trans = np.dot(M, feat1)
+        trans /= trans[2]
 
-        # transform image 1 by M
-        [xt, yt, zt] = np.dot(M, np.array([a_x, a_y, 1]))
+        # Get feature from image 2
+        feat2 = f2[matches[i].trainIdx].pt
+        feat2 = np.array([feat2[0],feat2[1],1])
 
-        x = xt / zt
-        y = yt / zt
-
-        # compute euclidean distance
-        distance = np.sqrt((b_x - x) ** 2 + (b_y - y) ** 2)
-
-        if distance <= RANSACthresh:
+        # Compute euclidean distance
+        dist = np.linalg.norm(trans - feat2)
+        
+        if (dist < RANSACthresh) :
             inlier_indices.append(i)
 
         #TODO-BLOCK-END
         #END TODO
-
     return inlier_indices
 
 def leastSquaresFit(f1, f2, matches, m, inlier_indices):
@@ -250,9 +253,11 @@ def leastSquaresFit(f1, f2, matches, m, inlier_indices):
             #over all inliers.
             #TODO-BLOCK-BEGIN
 
+            index = inlier_indices[i]
+
             # sum of difference between matches
-            u += f2[matches[i].trainIdx].pt[0] - f1[matches[i].queryIdx].pt[0]
-            v += f2[matches[i].trainIdx].pt[1] - f1[matches[i].queryIdx].pt[1]
+            u += f2[matches[index].trainIdx].pt[0] - f1[matches[index].queryIdx].pt[0]
+            v += f2[matches[index].trainIdx].pt[1] - f1[matches[index].queryIdx].pt[1]
 
             #TODO-BLOCK-END
             #END TODO
@@ -270,8 +275,10 @@ def leastSquaresFit(f1, f2, matches, m, inlier_indices):
         #TODO-BLOCK-BEGIN
 
         _matches = []
-        for i in inlier_indices:
-            _matches.append(matches[i])
+        for i in range(len(inlier_indices)):
+            index = inlier_indices[i]
+            _matches.append(matches[index])
+
         M = computeHomography(f1, f2, _matches)
 
         #TODO-BLOCK-END
