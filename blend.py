@@ -65,7 +65,18 @@ def normalizeBlend(acc):
     # BEGIN TODO 11
     # fill in this routine..
     #TODO-BLOCK-BEGIN
-    raise Exception("TODO in blend.py not implemented")
+    
+    # height = acc.shape[0]
+    # width = acc.shape[1]
+    # img = np.zeros((height, width, 3))
+    # for i in range(height):
+    #     for j in range(width):
+    #         if acc[i, j, 3] > 0:
+    #             img[i, j, 0] = int(acc[i, j, 0] / acc[i, j, 3])
+    #             img[i, j, 1] = int(acc[i, j, 1] / acc[i, j, 3])
+    #             img[i, j, 2] = int(acc[i, j, 2] / acc[i, j, 3])
+    # img = np.uint8(img)
+
     #TODO-BLOCK-END
     # END TODO
     return img
@@ -107,14 +118,18 @@ def getAccSize(ipv):
         # BEGIN TODO 9
         # add some code here to update minX, ..., maxY
         #TODO-BLOCK-BEGIN
-        raise Exception("TODO in blend.py not implemented")
+        _minX, _minY, _maxX, _maxY = imageBoundingBox(img, M)
+        minX = min(minX, _minX)
+        minY = min(minY, _minY)
+        maxX = max(maxX, _maxX)
+        maxY = max(maxY, _maxY)
         #TODO-BLOCK-END
         # END TODO
 
     # Create an accumulator image
     accWidth = int(math.ceil(maxX) - math.floor(minX))
     accHeight = int(math.ceil(maxY) - math.floor(minY))
-    print 'accWidth, accHeight:', (accWidth, accHeight)
+    print ('accWidth, accHeight:', (accWidth, accHeight))
     translation = np.array([[1, 0, -minX], [0, 1, -minY], [0, 0, 1]])
 
     return accWidth, accHeight, channels, width, translation
@@ -199,7 +214,9 @@ def blendImages(ipv, blendWidth, is360=False, A_out=None):
     # Note: warpPerspective does forward mapping which means A is an affine
     # transform that maps accumulator coordinates to final panorama coordinates
     #TODO-BLOCK-BEGIN
-    raise Exception("TODO in blend.py not implemented")
+
+    if is360:
+        A = computeDrift(x_init, y_init, x_final, y_final, width)
     #TODO-BLOCK-END
     # END TODO
 
