@@ -29,7 +29,29 @@ def imageBoundingBox(img, M):
     """
     #TODO 8
     #TODO-BLOCK-BEGIN
-    raise Exception("TODO in blend.py not implemented")
+    height, width = img.shape
+
+    p1 = np.dot(M, np.array([0, 0, 1]))
+    p2 = np.dot(M, np.array([0, height-1, 1]))
+    p3 = np.dot(M, np.array([width-1, 0, 1]))
+    p4 = np.dot(M, np.array([width-1, height-1, 1]))
+
+    # convert from homogeneous coords
+    x1 = p1[0, 0] / p1[0, 2]
+    y1 = p1[0, 1] / p1[0, 2]
+    x2 = p2[0, 0] / p2[0, 2]
+    y2 = p2[0, 1] / p2[0, 2]
+    x3 = p3[0, 0] / p3[0, 2]
+    y3 = p3[0, 1] / p3[0, 2]
+    x4 = p4[0, 0] / p4[0, 2]
+    y4 = p4[0, 1] / p4[0, 2]
+
+
+    minX = math.ceil(min(x1, x2, x3, x4))
+    minY = math.ceil(min(y1, y2, y3, y4))
+    maxX = math.ceil(max(x1, x2, x3, x4))
+    maxY = math.ceil(max(y1, y2, y3, y4))
+
     #TODO-BLOCK-END
     return int(minX), int(minY), int(maxX), int(maxY)
 
@@ -49,7 +71,40 @@ def accumulateBlend(img, acc, M, blendWidth):
     # BEGIN TODO 10
     # Fill in this routine
     #TODO-BLOCK-BEGIN
-    raise Exception("TODO in blend.py not implemented")
+
+    height, width = img.shape
+    minX, minY, maxX, maxY = imageBoundingBox(img, M)
+
+    for i in range(minX, maxX + 1):
+        for j in range(minY, maxY + 1):
+            # resample each image to its final location by using inverse warping
+            p = np.dot(np.linalg.inv(M), np.array([i, j, 1]))
+
+            x = p[0, 0]
+            y = p[1, 0]
+            z = p[2, 0]
+
+            _x = int(x/z)
+            _y = int(y/z)
+
+            # exclude black pixels in inverse warping
+            if _x < 0 or _x >= width-1 or _y < 0 or _y >= height-1:
+                continue
+
+            weights = 1.0
+
+            if _x >= minX and _x < minX + blendWidth:
+                weights = float(_x - minX) / blendWidth
+            if _x <= maxX and _x > maxX - blendWidth:
+                weights = float(maxX - _x) / blendWidth
+
+            # compute normalizing weights
+            acc[j,i,3] += weights
+
+            # update acc with weighted img in first 3 channels
+            for k in range(3):
+                acc[j, i, k] += img[_y, _x, c] * weights      
+
     #TODO-BLOCK-END
     # END TODO
 
