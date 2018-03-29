@@ -53,7 +53,6 @@ def imageBoundingBox(img, M):
     maxY = math.ceil(max(y1, y2, y3, y4))
 
     #TODO-BLOCK-END
-    print(int(minX), int(minY), int(maxX), int(maxY))
     return int(minX), int(minY), int(maxX), int(maxY)
 
 
@@ -132,7 +131,6 @@ def normalizeBlend(acc):
                     img[i, j, c] = int(acc[i, j, c] / weights)
 
     img = np.uint8(img)
-    print('***', img)
     #TODO-BLOCK-END
     # END TODO
     return img
