@@ -29,7 +29,7 @@ def imageBoundingBox(img, M):
     """
     #TODO 8
     #TODO-BLOCK-BEGIN
-    height, width = img.shape
+    height, width = img.shape[0], img.shape[1]
 
     p1 = np.dot(M, np.array([0, 0, 1]))
     p2 = np.dot(M, np.array([0, height-1, 1]))
@@ -37,14 +37,14 @@ def imageBoundingBox(img, M):
     p4 = np.dot(M, np.array([width-1, height-1, 1]))
 
     # convert from homogeneous coords
-    x1 = p1[0, 0] / p1[0, 2]
-    y1 = p1[0, 1] / p1[0, 2]
-    x2 = p2[0, 0] / p2[0, 2]
-    y2 = p2[0, 1] / p2[0, 2]
-    x3 = p3[0, 0] / p3[0, 2]
-    y3 = p3[0, 1] / p3[0, 2]
-    x4 = p4[0, 0] / p4[0, 2]
-    y4 = p4[0, 1] / p4[0, 2]
+    x1 = p1[0] / p1[2]
+    y1 = p1[1] / p1[2]
+    x2 = p2[0] / p2[2]
+    y2 = p2[1] / p2[2]
+    x3 = p3[0] / p3[2]
+    y3 = p3[1] / p3[2]
+    x4 = p4[0] / p4[2]
+    y4 = p4[1] / p4[2]
 
 
     minX = math.ceil(min(x1, x2, x3, x4))
@@ -53,6 +53,7 @@ def imageBoundingBox(img, M):
     maxY = math.ceil(max(y1, y2, y3, y4))
 
     #TODO-BLOCK-END
+    print(int(minX), int(minY), int(maxX), int(maxY))
     return int(minX), int(minY), int(maxX), int(maxY)
 
 
@@ -72,7 +73,7 @@ def accumulateBlend(img, acc, M, blendWidth):
     # Fill in this routine
     #TODO-BLOCK-BEGIN
 
-    height, width = img.shape
+    height, width = img.shape[0], img.shape[1]
     minX, minY, maxX, maxY = imageBoundingBox(img, M)
 
     for i in range(minX, maxX + 1):
@@ -80,9 +81,9 @@ def accumulateBlend(img, acc, M, blendWidth):
             # resample each image to its final location by using inverse warping
             p = np.dot(np.linalg.inv(M), np.array([i, j, 1]))
 
-            x = p[0, 0]
-            y = p[1, 0]
-            z = p[2, 0]
+            x = p[0]
+            y = p[1]
+            z = p[2]
 
             _x = int(x/z)
             _y = int(y/z)
@@ -102,8 +103,8 @@ def accumulateBlend(img, acc, M, blendWidth):
             acc[j,i,3] += weights
 
             # update acc with weighted img in first 3 channels
-            for k in range(3):
-                acc[j, i, k] += img[_y, _x, c] * weights      
+            for c in range(3):
+                acc[j, i, c] += img[_y, _x, c] * weights      
 
     #TODO-BLOCK-END
     # END TODO
@@ -121,8 +122,7 @@ def normalizeBlend(acc):
     # fill in this routine..
     #TODO-BLOCK-BEGIN
     
-    height = acc.shape[0]
-    width = acc.shape[1]
+    height, width = acc.shape[0], acc.shape[1]
     img = np.zeros((height, width, 3))
     for i in range(height):
         for j in range(width):
@@ -131,6 +131,8 @@ def normalizeBlend(acc):
                 for c in range(3):
                     img[i, j, c] = int(acc[i, j, c] / weights)
 
+    img = np.uint8(img)
+    print('***', img)
     #TODO-BLOCK-END
     # END TODO
     return img
