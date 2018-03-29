@@ -86,8 +86,11 @@ def computeHomography(f1, f2, matches, A_out=None):
 
     # min eigenvalue of A^TA is the last col of Vt
     H = Vt[-1].reshape((3,3))
-    # convert to homogenous coords
-    H /= H[2, 2]
+
+    # convert from homogenous coords
+    Z = H[2, 2]
+    if Z != np.nan or Z != 0:
+        H /= Z
 
     #TODO-BLOCK-END
     #END TODO
