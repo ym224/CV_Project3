@@ -139,7 +139,7 @@ def alignPair(f1, f2, matches, m, nRANSAC, RANSACthresh):
         M = np.eye(3)
 
         if m == eTranslate:
-            idx = np.random.randint(len(matches), size = 1)
+            idx = np.random.randint(len(matches))
             match = matches[idx]
             M[0, 2] = f2[match.trainIdx].pt[0] - f1[match.queryIdx].pt[0]
             M[1, 2] = f2[match.trainIdx].pt[1] - f1[match.queryIdx].pt[1]
