@@ -122,6 +122,14 @@ def normalizeBlend(acc):
     #TODO-BLOCK-BEGIN
     
     height, width = acc.shape[0], acc.shape[1]
+    print ("Height: ")
+    print (height)
+    print ("Width: ")
+    print (width)
+    print ("What is this?")
+    print (acc)
+    print ("/n")
+
     img = np.zeros((height, width, 3))
     for i in range(height):
         for j in range(width):
