@@ -89,7 +89,7 @@ def computeHomography(f1, f2, matches, A_out=None):
 
     # convert from homogenous coords
     Z = H[2, 2]
-    if Z != np.nan or Z != 0:
+    if Z != np.nan and Z != 0:
         H /= Z
 
     #TODO-BLOCK-END
