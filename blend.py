@@ -11,7 +11,6 @@ class ImageInfo:
         self.img = img
         self.position = position
 
-
 def imageBoundingBox(img, M):
     """
        This is a useful helper function that you might choose to implement
@@ -45,7 +44,6 @@ def imageBoundingBox(img, M):
     y3 = p3[1] / p3[2]
     x4 = p4[0] / p4[2]
     y4 = p4[1] / p4[2]
-
 
     minX = math.ceil(min(x1, x2, x3, x4))
     minY = math.ceil(min(y1, y2, y3, y4))
@@ -87,12 +85,12 @@ def accumulateBlend(img, acc, M, blendWidth):
             _x = int(x/z)
             _y = int(y/z)
 
+            if _x < 0 or _x >= width-1 or _y < 0 or _y >= height-1:
+                continue
+
             # exclude black pixels in inverse warping
             if img[_y, _x, 0] == 0 and img[_y, _x, 1] == 0 and img[_y, _x, 2] == 0:
                 continue 
-
-            if _x < 0 or _x >= width-1 or _y < 0 or _y >= height-1:
-                continue
 
             weights = 1.0
 
