@@ -88,6 +88,9 @@ def accumulateBlend(img, acc, M, blendWidth):
             _y = int(y/z)
 
             # exclude black pixels in inverse warping
+            if img[_y, _x, 0] == 0 and img[_y, _x, 1] == 0 and img[_y, _x, 2] == 0:
+                continue 
+
             if _x < 0 or _x >= width-1 or _y < 0 or _y >= height-1:
                 continue
 
@@ -122,13 +125,6 @@ def normalizeBlend(acc):
     #TODO-BLOCK-BEGIN
     
     height, width = acc.shape[0], acc.shape[1]
-    print ("Height: ")
-    print (height)
-    print ("Width: ")
-    print (width)
-    print ("What is this?")
-    print (acc)
-    print ("/n")
 
     img = np.zeros((height, width, 3))
     for i in range(height):
