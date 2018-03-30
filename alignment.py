@@ -200,8 +200,8 @@ def getInliers(f1, f2, matches, M, RANSACthresh):
         
         # Transform feature with given homography
         trans = np.dot(M, feat1)
-	if trans[2] != np.nan and trans[2] != 0:
-	    trans /= trans[2]
+        if trans[2] != np.nan and trans[2] != 0:
+	       trans /= trans[2]
 
         # Get feature from image 2
         feat2 = f2[matches[i].trainIdx].pt
